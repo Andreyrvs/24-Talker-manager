@@ -8,7 +8,8 @@ async function getSpeaker() {
 }
 
 async function setSpeaker(newTalker) {
-  return await fs.writeFile(FILE_NAME, JSON.stringify(newTalker));
+  const fileContent = await fs.writeFile(FILE_NAME, JSON.stringify(newTalker));
+  return fileContent;
 }
 
 module.exports = { getSpeaker, setSpeaker };

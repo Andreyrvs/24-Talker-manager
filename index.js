@@ -34,13 +34,13 @@ app.get('/talker', async (_req, res) => {
   res.status(HTTP_OK_STATUS).json(await getSpeaker());
 });
 
-app.post('/talker', authMiddleware, validateName, async (req, res) => {
+app.post('/talker', authMiddleware, validateName, validatePassword, async (req, res) => {
   try {
     const { id, name } = req.body;
     const talker = await getSpeaker();
 
     if (talker.some((person) => person.id === id)) {
-      return res.status(400).json({});
+      return res.status(400).json({ message: 'Oia aqui deu erro' });
     }
 
     talker.push({ id, name });
