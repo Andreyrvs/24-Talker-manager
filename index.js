@@ -6,7 +6,7 @@ const crypto = require('crypto');
 
 const validateEmail = require('./middleware/validateEmail');
 
-const validatePassword = require('./middleware/validatePassword')
+const validatePassword = require('./middleware/validatePassword');
 
 const app = express();
 app.use(bodyParser.json());
@@ -48,7 +48,7 @@ app.get('/talker/:id', async (req, res) => {
   }
 });
 
-app.post('/login', validateEmail , validatePassword , (req, res) => {
+app.post('/login', validateEmail, validatePassword, (req, res) => {
   try {
     return res.status(200).json({ token: `${generateToken()}` });
   } catch (error) {
