@@ -1,24 +1,24 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const crypto = require('crypto');
+
 const validateEmail = require('./middleware/validateEmail');
 
 const validatePassword = require('./middleware/validatePassword');
 
-const authMiddleware = require('./middleware/authMiddleware')
+const authMiddleware = require('./middleware/authMiddleware');
 
-const validateName = require('./middleware/validateName')
+const validateName = require('./middleware/validateName');
 
 const { getSpeaker, setSpeaker } = require('./fsContent');
-
-const crypto = require('crypto');
 
 const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
-const HTTP_NOT_FOUND = 404
-const HTTP_INTERNAL_SERVER_ERROR = 500
+const HTTP_NOT_FOUND = 404;
+const HTTP_INTERNAL_SERVER_ERROR = 500;
 const PORT = '3000';
 
 function generateToken() {
@@ -46,11 +46,11 @@ app.post('/talker', authMiddleware, validateName, async (req, res) => {
     talker.push({ id, name });
     await setSpeaker(talker);
 
-    return res.status(204).json({})
+    return res.status(204).json({});
   } catch (error) {
-    return res.status(HTTP_INTERNAL_SERVER_ERROR).end()
+    return res.status(HTTP_INTERNAL_SERVER_ERROR).end();
   }
-})
+});
 
 app.get('/talker/:id', async (req, res) => {
   try {
