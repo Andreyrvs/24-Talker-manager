@@ -3,7 +3,7 @@ module.exports = (req, res, next) => {
 
   console.log('TOKEN', token);
   console.log('AUTHORIZATION', authorization);
-  if (authorization !== token) {
+  if (!authorization) {
     return res.status(401).json({ message: 'Token inválido' });
   }
   

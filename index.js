@@ -11,6 +11,12 @@ const authMiddleware = require('./middleware/authMiddleware');
 
 const validateName = require('./middleware/validateName');
 
+const validateTalk = require('./middleware/validateTalk');
+
+const validateWatchedAt = require('./middleware/validateWatchedAt');
+
+const validateRate = require('./middleware/validateRate');
+
 const { getSpeaker, setSpeaker } = require('./fsContent');
 
 const app = express();
@@ -34,7 +40,13 @@ app.get('/talker', async (_req, res) => {
   res.status(HTTP_OK_STATUS).json(await getSpeaker());
 });
 
-app.post('/talker', authMiddleware, validateName, validatePassword, async (req, res) => {
+app.post('/talker', 
+    authMiddleware,
+    validateName,
+    validateTalk,
+    validateWatchedAt,
+    validateRate,
+    async (req, res) => {
   try {
     const { id, name } = req.body;
     const talker = await getSpeaker();
@@ -46,7 +58,7 @@ app.post('/talker', authMiddleware, validateName, validatePassword, async (req, 
     talker.push({ id, name });
     await setSpeaker(talker);
 
-    return res.status(204).json({});
+    return res.status(201).json(talker);
   } catch (error) {
     return res.status(HTTP_INTERNAL_SERVER_ERROR).end();
   }
