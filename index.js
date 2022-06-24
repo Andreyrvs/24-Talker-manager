@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs/promises');
 
+const crypto = require('crypto');
+
 const app = express();
 app.use(bodyParser.json());
 
@@ -12,6 +14,10 @@ const PORT = '3000';
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
+
+function generateToken() {
+  return crypto.randomBytes(8).toString('hex');
+}
 
 async function speaker() {
   const fileContent = await fs.readFile('./talker.json', 'utf-8');
@@ -35,6 +41,18 @@ app.get('/talker/:id', async (req, res) => {
     return res.status(200).json(findPerson);
   } catch (error) {
     return res.status(500).end();
+  }
+});
+
+app.post('/login', (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+     return res.status(404).json({ message: 'Num tem o trem' });
+    }
+    return res.status(200).json({ token: `${generateToken()}` });
+  } catch (error) {
+    res.status(500).end()
   }
 });
 
