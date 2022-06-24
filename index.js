@@ -5,6 +5,10 @@ const validateEmail = require('./middleware/validateEmail');
 
 const validatePassword = require('./middleware/validatePassword');
 
+const authMiddleware = require('./middleware/authMiddleware')
+
+const validateName = require('./middleware/validateName')
+
 const { getSpeaker, setSpeaker } = require('./fsContent');
 
 const crypto = require('crypto');
@@ -13,6 +17,8 @@ const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
+const HTTP_NOT_FOUND = 404
+const HTTP_INTERNAL_SERVER_ERROR = 500
 const PORT = '3000';
 
 function generateToken() {
@@ -28,23 +34,23 @@ app.get('/talker', async (_req, res) => {
   res.status(HTTP_OK_STATUS).json(await getSpeaker());
 });
 
-// app.post('/talker', (req, res) => {
-//   try {
-//     const { id, name } = req.body;
-//     const talker = await getSpeaker();
+app.post('/talker', authMiddleware, validateName, async (req, res) => {
+  try {
+    const { id, name } = req.body;
+    const talker = await getSpeaker();
 
-//     if (talker.some((person) => person.id === id)) {
-//       return res.status(400).json({});
-//     }
+    if (talker.some((person) => person.id === id)) {
+      return res.status(400).json({});
+    }
 
-//     talker.push({ id, name });
-//     await setSpeaker(talker);
+    talker.push({ id, name });
+    await setSpeaker(talker);
 
-//     return res.status(204).json({})
-//   } catch (error) {
-//     return res.status(500).end()
-//   }
-// })
+    return res.status(204).json({})
+  } catch (error) {
+    return res.status(HTTP_INTERNAL_SERVER_ERROR).end()
+  }
+})
 
 app.get('/talker/:id', async (req, res) => {
   try {
@@ -53,11 +59,11 @@ app.get('/talker/:id', async (req, res) => {
     const findPerson = people.find((person) => person.id === Number(id));
     console.log(findPerson);
     if (!findPerson) {
-      return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+      return res.status(HTTP_NOT_FOUND).json({ message: 'Pessoa palestrante não encontrada' });
     }
     return res.status(HTTP_OK_STATUS).json(findPerson);
   } catch (error) {
-    return res.status(500).end();
+    return res.status(HTTP_INTERNAL_SERVER_ERROR).end();
   }
 });
 
@@ -65,7 +71,7 @@ app.post('/login', validateEmail, validatePassword, (_req, res) => {
   try {
     return res.status(HTTP_OK_STATUS).json({ token: `${generateToken()}` });
   } catch (error) {
-    res.status(500).end();
+    res.status(HTTP_INTERNAL_SERVER_ERROR).end();
   }
 });
 
