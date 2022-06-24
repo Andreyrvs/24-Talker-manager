@@ -4,6 +4,10 @@ const fs = require('fs/promises');
 
 const crypto = require('crypto');
 
+const validateEmail = require('./middleware/validateEmail');
+
+const validatePassword = require('./middleware/validatePassword')
+
 const app = express();
 app.use(bodyParser.json());
 
@@ -44,12 +48,8 @@ app.get('/talker/:id', async (req, res) => {
   }
 });
 
-app.post('/login', (req, res) => {
+app.post('/login', validateEmail , validatePassword , (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-     return res.status(404).json({ message: 'Num tem o trem' });
-    }
     return res.status(200).json({ token: `${generateToken()}` });
   } catch (error) {
     res.status(500).end();
