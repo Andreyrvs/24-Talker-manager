@@ -52,7 +52,7 @@ app.post('/login', (req, res) => {
     }
     return res.status(200).json({ token: `${generateToken()}` });
   } catch (error) {
-    res.status(500).end()
+    res.status(500).end();
   }
 });
 
