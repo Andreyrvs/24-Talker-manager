@@ -14,7 +14,7 @@ async function getSpeaker() {
 
 async function setSpeaker(newTalker) {
   try {
-    await fs.writeFile(FILE_NAME, newTalker);
+    await fs.writeFile(FILE_NAME, JSON.stringify(newTalker));
     console.log('Arquivo escrito com sucesso!');
   } catch (error) {
     console.error(`Erro ao escrever o arquivo: ${error.message}`);
