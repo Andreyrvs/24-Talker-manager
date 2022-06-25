@@ -11,6 +11,8 @@ const authMiddleware = require('./middleware/authMiddleware');
 
 const validateName = require('./middleware/validateName');
 
+const validateAge = require('./middleware/validateAge');
+
 const validateTalk = require('./middleware/validateTalk');
 
 const validateWatchedAt = require('./middleware/validateWatchedAt');
@@ -43,19 +45,20 @@ app.get('/talker', async (_req, res) => {
 app.post('/talker', 
     authMiddleware,
     validateName,
+    validateAge,
     validateTalk,
     validateWatchedAt,
     validateRate,
     async (req, res) => {
   try {
-    const { id, name } = req.body;
+    const { id, name, talk } = req.body;
     const talker = await getSpeaker();
 
     if (talker.some((person) => person.id === id)) {
       return res.status(400).json({ message: 'Oia aqui deu erro' });
     }
 
-    talker.push({ id, name });
+    talker.push({ id, name, talk });
     await setSpeaker(talker.toString());
 
     return res.status(201).json(talker);
