@@ -51,19 +51,16 @@ app.post('/talker',
     validateRate,
     async (req, res) => {
   try {
-    const { id, name, talk, age } = req.body;
+    const { name, talk: { rate, watchedAt }, age } = req.body;
     const talker = await getSpeaker();
-    const talkerParser = JSON.parse(talker);
-    if (talker.some((person) => person.id === id)) {
-      return res.status(400).json({ message: 'Oia aqui deu erro' });
-    }
 
-    talkerParser.push({ age, id: id.length += 1, name, talk });
+    const newTalker = { name, age, id: talker.length + 1, talk: watchedAt, rate };
+    talker.push(newTalker);
     await setSpeaker(talker);
 
-    return res.status(201).json(talker);
+    return res.status(201).json(newTalker);
   } catch (error) {
-    return res.status(HTTP_INTERNAL_SERVER_ERROR).end();
+    return res.status(HTTP_INTERNAL_SERVER_ERROR).json(error);
   }
 });
 

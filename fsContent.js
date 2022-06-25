@@ -5,7 +5,8 @@ const FILE_NAME = './talker.json';
 async function getSpeaker() {
   try {
     const fileContent = await fs.readFile(FILE_NAME, 'utf-8');
-    return JSON.parse(fileContent);
+    const response = JSON.parse(fileContent);
+    return response;
   } catch (error) {
     console.error(`Não foi possivel ler o arquivo ${FILE_NAME}\n Erro: ${error}`);
     process.exit(1);
