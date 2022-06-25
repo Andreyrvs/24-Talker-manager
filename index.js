@@ -54,7 +54,7 @@ app.post('/talker',
     const { name, talk: { rate, watchedAt }, age } = req.body;
     const talker = await getSpeaker();
 
-    const newTalker = { name, age, id: talker.length + 1, talk: watchedAt, rate };
+    const newTalker = { name, age, id: talker.length + 1, talk: { watchedAt, rate } };
     talker.push(newTalker);
     await setSpeaker(talker);
 
