@@ -56,7 +56,7 @@ app.post('/talker',
     }
 
     talker.push({ id, name });
-    await setSpeaker(talker);
+    await setSpeaker(talker.toString());
 
     return res.status(201).json(talker);
   } catch (error) {
