@@ -90,15 +90,11 @@ app.put('/talker/:id',
     const { id } = req.params;
     const { name, age, talk: { watchedAt, rate } } = req.body;
     const people = await getSpeaker();
-    const findPerson = people.findIndex((r) => r.id === Number(id));
-
-    if (findPerson === -1) {
-      return res.status(500).json({ message: 'num tem nada aqui' });
-    }
-
-    people[findPerson] = { ...people[findPerson], name, age, talk: { watchedAt, rate } };
-
-    res.status(200).end(); 
+    const findPerson = people.filter((person) => person.id !== Number(id));
+    const newPerson = { id: Number(id), name, age, talk: { watchedAt, rate } };
+    const editPeople = [...findPerson, newPerson];
+    await setSpeaker(editPeople);
+    res.status(200).json(newPerson); 
 });
 
 app.post('/login', validateEmail, validatePassword, (_req, res) => {
