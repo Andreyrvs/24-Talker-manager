@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     return res.status(401).json({ message: 'Token inválido' });
   }
   
-  if (!authorization || authorization.length !== 16) {
+  if (authorization.length !== 16) {
     return res.status(401).json({ message: 'Token não encontrado' });
   }
 
