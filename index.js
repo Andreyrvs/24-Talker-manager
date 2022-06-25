@@ -97,6 +97,15 @@ app.put('/talker/:id',
     res.status(200).json(newPerson); 
 });
 
+app.delete('/talker/:id', authMiddleware, async (req, res) => {
+  const { id } = req.params;
+  const people = await getSpeaker();
+  const findPerson = people.filter((person) => person.id !== Number(id));
+  await setSpeaker(findPerson);
+
+  return res.status(204).end();
+});
+
 app.post('/login', validateEmail, validatePassword, (_req, res) => {
   try {
     return res.status(HTTP_OK_STATUS).json({ token: `${generateToken()}` });
