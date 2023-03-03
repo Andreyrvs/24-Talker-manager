@@ -7,27 +7,36 @@ Este projeto trata-se de uma aplicação de cadastro de talkers (palestrantes) e
 ## Técnologias usadas
 
 Back-end:
-> Desenvolvido usando: NodeJS, ExpressJS
+> Desenvolvido usando: NodeJS, ExpressJS, MongoDB, MYSQL, ES6
+
+## Habilidades
+
+Adquiri essas habilidades ao desenvolver esse projeto:
+
+## Preview da Aplicação
+
+| ![Login](./aplicacao-) | ![Home](./aplicacao-) |
+| ----------- | ----------- |
 
 ## Instalando Dependências
 
-* clone o projeto:
+- clone o projeto:
 
   ```bash
-  git clone git@github.com:Andreyrvs/talker-manager.git
+  git clone git@github.com:Andreyrvs/24-talker-manager.git
   ```
 
-> Backend
+  > Back-end
 
   ```bash
-    cd talker-manager
-    npm install
+  cd 24-talker-manager
+  npm install
   ```
 
 ## Executando aplicação
 
-* Para rodar o back-end:
+- Para rodar o Back-end:
 
   ```bash
-  npm start
+  cd api/ && npm start
   ```
