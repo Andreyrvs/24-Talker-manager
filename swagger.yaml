@@ -7,10 +7,11 @@ info:
 
     Alguns links úteis:
 
-    - [Repositorio Store Manager](https://github.com/Andreyrvs/24-talker-manager)
+    - [Repositorio Talker Manager](https://github.com/Andreyrvs/24-talker-manager)
   version: 1.0.0
   contact:
     email: cortaesai@gmail.com
+    linkedin: https://www.linkedin.com/in/andreyrv/
 servers:
   - url: http://localhost:3001/
   - url: https://24-talker-manager-production.up.railway.app/
@@ -32,7 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#components/schemas/Talker'
+                  $ref: '#components/schemas/Health'
 
   /api/talker:
     get:
@@ -40,11 +41,19 @@ paths:
         - talker
       summary: Retorna todos os palestrantes
       description: Um array de objetos com dados dos palestrantes
-      operationId:
+      responses:
+        '200':
+          description: Operação bem sucedida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Talker'
 
 components:
   schemas:
-    Talker:
+    Health:
       type: object
       properties:
         uptime:
@@ -59,3 +68,24 @@ components:
         cors:
           type: string
           example: This is CORS-enabled for all origins!
+    Talker:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Henrique Albuquerque
+        age:
+          type: integer
+          example: 87
+        id:
+          type: integer
+          example: 2
+        talk:
+          type: object
+          properties:
+            watchedAt:
+              type: string
+              example: 23/10/2020
+            rate:
+              type: string
+              example: 5
