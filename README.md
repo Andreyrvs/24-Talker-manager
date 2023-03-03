@@ -30,6 +30,8 @@ Adquiri essas habilidades ao desenvolver esse projeto:
 
   ```bash
   cd 24-talker-manager
+  docker compose up -d
+  docker exec -it talker_manager bash
   npm install
   ```
 
@@ -38,5 +40,11 @@ Adquiri essas habilidades ao desenvolver esse projeto:
 - Para rodar o Back-end:
 
   ```bash
-  cd api/ && npm start
+  npm start
   ```
+
+  - Rodar com o nodemon:
+
+    ```bash
+    npm run dev
+    ```
