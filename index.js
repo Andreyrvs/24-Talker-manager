@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const HTTP_NOT_FOUND = 404;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
-const PORT = '3000';
+const PORT = process.env.PORT || '3001';
 
 function generateToken() {
   return crypto.randomBytes(8).toString('hex');
