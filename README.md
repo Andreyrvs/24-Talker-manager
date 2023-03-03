@@ -13,16 +13,20 @@ Desafios:
 ## Técnologias usadas
 
 Back-end:
-> Desenvolvido usando: NodeJS, ExpressJS, express-rescue, crypto-js
+> Desenvolvido usando: Node.js, Express.js, Docker, Swagger.
 
 ## Habilidades
 
 Adquiri essas habilidades ao desenvolver esse projeto:
 
-## Preview da Aplicação
+- Aderência do código à especificação. Meu programa deve se comportar como especificado;
+
+- Organização do código. Usando middlewares e routers, seu código deve ser o mais limpo e organizado o possível;
+
+<!-- ## Preview da Aplicação
 
 | ![Login](./aplicacao-) | ![Home](./aplicacao-) |
-| ----------- | ----------- |
+| ----------- | ----------- | -->
 
 ## Instalando Dependências
 
@@ -36,8 +40,18 @@ Adquiri essas habilidades ao desenvolver esse projeto:
 
   ```bash
   cd 24-talker-manager
+  ```
+
+  > Docker
+
+  ```docker
   docker compose up -d
   docker exec -it talker_manager bash
+  ```
+
+  > Dentro do contêiner use:
+
+  ```bash
   npm install
   ```
 
@@ -49,8 +63,14 @@ Adquiri essas habilidades ao desenvolver esse projeto:
   npm start
   ```
 
-  - Rodar com o nodemon:
+  - Rodar modo desenvolvedor com o `nodemon`:
 
     ```bash
     npm run dev
     ```
+
+> Rota da Documentação do Swagger:
+
+  ```docker
+  localhost:3001/
+  ```
