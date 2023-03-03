@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 
 const crypto = require('crypto');
 
+const helmet = require('helmet');
+
 const validateEmail = require('./middleware/validateEmail');
 
 const validatePassword = require('./middleware/validatePassword');
@@ -23,6 +25,7 @@ const { getSpeaker, setSpeaker } = require('./fsContent');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(helmet());
 
 const HTTP_OK_STATUS = 200;
 const HTTP_NOT_FOUND = 404;
@@ -32,10 +35,10 @@ const PORT = process.env.PORT || '3001';
 function generateToken() {
   return crypto.randomBytes(8).toString('hex');
 }
-
+// app.use('api/v1');
 // não remova esse endpoint, e para o avaliador funcionar
-app.get('/', (_request, response) => {
-  response.status(HTTP_OK_STATUS).send();
+app.get('/api', (_request, response) => {
+  response.status(HTTP_OK_STATUS).send({ message: 'Home' });
 });
 
 app.get('/health', (_req, res) => {
@@ -53,11 +56,11 @@ app.get('/health', (_req, res) => {
 }
 });
 
-app.get('/talker', async (_req, res) => {
+app.get('/api/talker', async (_req, res) => {
   res.status(HTTP_OK_STATUS).json(await getSpeaker());
 });
 
-app.post('/talker', 
+app.post('/api/talker', 
     authMiddleware,
     validateName,
     validateAge,
@@ -79,7 +82,7 @@ app.post('/talker',
   }
 });
 
-app.get('/talker/:id', async (req, res) => {
+app.get('/api/talker/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const people = await getSpeaker();
@@ -94,7 +97,7 @@ app.get('/talker/:id', async (req, res) => {
   }
 }); 
 
-app.put('/talker/:id',
+app.put('/api/talker/:id',
   authMiddleware, 
   validateName,
   validateAge,
@@ -112,7 +115,7 @@ app.put('/talker/:id',
     res.status(200).json(newPerson); 
 });
 
-app.delete('/talker/:id', authMiddleware, async (req, res) => {
+app.delete('/api/talker/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
   const people = await getSpeaker();
   const findPerson = people.filter((person) => person.id !== Number(id));
@@ -121,7 +124,7 @@ app.delete('/talker/:id', authMiddleware, async (req, res) => {
   return res.status(204).end();
 });
 
-app.post('/login', validateEmail, validatePassword, (_req, res) => {
+app.post('/api/login', validateEmail, validatePassword, (_req, res) => {
   try {
     return res.status(HTTP_OK_STATUS).json({ token: `${generateToken()}` });
   } catch (error) {

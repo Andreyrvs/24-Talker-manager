@@ -4,10 +4,16 @@
 
 Este projeto trata-se de uma aplicação de cadastro de talkers (palestrantes) em que será possível cadastrar, visualizar, pesquisar, editar e excluir informações.
 
+Desafios:
+
+  1. Desenvolver uma API de um CRUD (Create, Read, Update e Delete) de palestrantes (talkers);
+
+  2. Desenvolver alguns endpoints que irão ler e escrever em um arquivo utilizando o módulo fs.
+
 ## Técnologias usadas
 
 Back-end:
-> Desenvolvido usando: NodeJS, ExpressJS, MongoDB, MYSQL, ES6
+> Desenvolvido usando: NodeJS, ExpressJS, express-rescue, crypto-js
 
 ## Habilidades
 
