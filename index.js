@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
 
+const swaggerDocument = YAML.load('./swagger.yaml');
 const crypto = require('crypto');
 
 const helmet = require('helmet');
@@ -35,6 +38,9 @@ const HTTP_OK_STATUS = 200;
 const HTTP_NOT_FOUND = 404;
 const HTTP_INTERNAL_SERVER_ERROR = 500;
 const PORT = process.env.PORT || '3001';
+
+app.use('/', swaggerUi.serve);
+app.get('/', swaggerUi.setup(swaggerDocument));
 
 function generateToken() {
   return crypto.randomBytes(8).toString('hex');
