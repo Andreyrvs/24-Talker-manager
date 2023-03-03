@@ -44,6 +44,7 @@ app.get('/health', (_req, res) => {
     message: 'Ok',
     timestamp: new Date(),
   };
+
   try {
     res.send(healthcheck);
 } catch (error) {
