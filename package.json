@@ -12,7 +12,7 @@
     "posttest": "cp tests/seed.json talker.json",
     "restore": "cp tests/seed.json talker.json",
     "start": "node index.js",
-    "dev": "nodemon index.js --ignore 'talker.json'",
+    "dev": "nodemon index.js --ignore 'talker.json' --watch './swagger.yaml'",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json ."
   },
   "keywords": [],
@@ -25,7 +25,8 @@
     "express": "4.17.1",
     "express-rescue": "1.1.30",
     "helmet": "^6.0.1",
-    "swagger-ui": "^4.17.0"
+    "swagger-ui-express": "^4.6.2",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "eslint": "6.8.0",

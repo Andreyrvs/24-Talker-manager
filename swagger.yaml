@@ -1,0 +1,61 @@
+openapi: 3.0.3
+info:
+  title: Cadastro de Palestrantes (C.R.U.D) - OpenAPI 3.0
+  description: >-
+    Este projeto trata-se de uma aplicação de cadastro de talkers (palestrantes) em que será possível cadastrar, visualizar, pesquisar, editar e excluir informações.
+
+
+    Alguns links úteis:
+
+    - [Repositorio Store Manager](https://github.com/Andreyrvs/24-talker-manager)
+  version: 1.0.0
+  contact:
+    email: cortaesai@gmail.com
+servers:
+  - url: http://localhost:3001/
+  - url: https://24-talker-manager-production.up.railway.app/
+tags:
+  - name: health
+    description: status da api
+  - name: talker
+    description: Tudo sobre os palestrantes
+paths:
+  /health:
+    get:
+      tags:
+        - health
+      summary: Status da API
+      description: Retorna um objeto com dados de tempo"
+      responses:
+        '200':
+          description: Operação bem sucedida
+          content:
+            application/json:
+              schema:
+                  $ref: '#components/schemas/Talker'
+
+  /api/talker:
+    get:
+      tags:
+        - talker
+      summary: Retorna todos os palestrantes
+      description: Um array de objetos com dados dos palestrantes
+      operationId:
+
+components:
+  schemas:
+    Talker:
+      type: object
+      properties:
+        uptime:
+          type: integer
+          example: 7.076872259
+        message:
+          type: string
+          example: OK
+        timestamp:
+          type: string
+          example: 2023-03-03T23:31:51.184Z
+        cors:
+          type: string
+          example: This is CORS-enabled for all origins!
