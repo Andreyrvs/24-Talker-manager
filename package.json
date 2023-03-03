@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
   "scripts": {
     "test": "jest --runInBand --verbose --forceExit",
     "posttest": "cp tests/seed.json talker.json",
