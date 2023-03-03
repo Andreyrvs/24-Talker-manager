@@ -7,6 +7,8 @@ const helmet = require('helmet');
 
 const cors = require('cors');
 
+const app = express();
+
 const validateEmail = require('./middleware/validateEmail');
 
 const validatePassword = require('./middleware/validatePassword');
@@ -25,7 +27,6 @@ const validateRate = require('./middleware/validateRate');
 
 const { getSpeaker, setSpeaker } = require('./fsContent');
 
-const app = express();
 app.use(bodyParser.json());
 app.use(helmet());
 app.use(cors());
