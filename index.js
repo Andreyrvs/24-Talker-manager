@@ -5,6 +5,8 @@ const crypto = require('crypto');
 
 const helmet = require('helmet');
 
+const cors = require('cors');
+
 const validateEmail = require('./middleware/validateEmail');
 
 const validatePassword = require('./middleware/validatePassword');
@@ -26,6 +28,7 @@ const { getSpeaker, setSpeaker } = require('./fsContent');
 const app = express();
 app.use(bodyParser.json());
 app.use(helmet());
+app.use(cors());
 
 const HTTP_OK_STATUS = 200;
 const HTTP_NOT_FOUND = 404;
@@ -46,6 +49,7 @@ app.get('/health', (_req, res) => {
     uptime: process.uptime(),
     message: 'Ok',
     timestamp: new Date(),
+    cors: 'This is CORS-enabled for all origins!',
   };
 
   try {
@@ -133,5 +137,5 @@ app.post('/api/login', validateEmail, validatePassword, (_req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`API online na porta: ${PORT}`);
+  console.log(`CORS-enabled web server listening on : ${PORT}`);
 });
