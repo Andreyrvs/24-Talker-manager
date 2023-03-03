@@ -38,6 +38,20 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
+app.get('/health', (_req, res) => {
+  const healthcheck = {
+    uptime: process.uptime(),
+    message: 'Ok',
+    timestamp: new Date(),
+  };
+  try {
+    res.send(healthcheck);
+} catch (error) {
+    healthcheck.message = error;
+    res.status(503).send();
+}
+});
+
 app.get('/talker', async (_req, res) => {
   res.status(HTTP_OK_STATUS).json(await getSpeaker());
 });
