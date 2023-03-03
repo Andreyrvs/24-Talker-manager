@@ -129,5 +129,5 @@ app.post('/login', validateEmail, validatePassword, (_req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log('Online');
+  console.log(`API online na porta: ${PORT}`);
 });
