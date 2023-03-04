@@ -20,6 +20,8 @@ tags:
     description: status da api
   - name: talker
     description: Tudo sobre os palestrantes
+  - name: login
+    description: Login da aplicação
 paths:
   /health:
     get:
@@ -35,6 +37,12 @@ paths:
               schema:
                   $ref: '#components/schemas/Health'
 
+  /api/login:
+    post:
+      tags:
+        - login
+        
+
   /api/talker:
     get:
       tags:
@@ -49,6 +57,25 @@ paths:
               schema:
                 type: array
                 items:
+                  $ref: '#components/schemas/Talker'
+    post:
+      tags:
+        - talker
+      summary: Cria um palestrante.
+      description: Um array de objetos com dados dos palestrantes
+      requestBody:
+        description: Insira o Palestrante com respectivos dados
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TalkerPost'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
                   $ref: '#components/schemas/Talker'
 
 components:
@@ -68,6 +95,7 @@ components:
         cors:
           type: string
           example: This is CORS-enabled for all origins!
+    
     Talker:
       type: object
       properties:
@@ -89,3 +117,36 @@ components:
             rate:
               type: string
               example: 5
+
+    TalkerPost:
+      required:
+        - name
+        - age
+        - talk
+        - watchedAt
+        - rate
+      type: object
+      properties:
+        name:
+          type: string
+          example: Andrey RV
+        age:
+          type: integer
+          example: 25
+        talk:
+          type: object
+          properties:
+            watchedAt:
+              type: string
+              example: 23/10/2020
+            rate:
+              type: string
+              example: 5
+
+requestBodies:
+  TalkerPost:
+    description: Adicionar Palestrante
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/TalkerPost'
