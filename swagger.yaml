@@ -16,12 +16,12 @@ servers:
   - url: http://localhost:3001/
   - url: https://24-talker-manager-production.up.railway.app/
 tags:
+  - name: login
+    description: Login da aplicação
   - name: health
     description: status da api
   - name: talker
     description: Tudo sobre os palestrantes
-  - name: login
-    description: Login da aplicação
 paths:
   /health:
     get:
@@ -52,13 +52,15 @@ paths:
         required: true
       responses:
         '200':
-        description: Operação bem sucedida
-        content:
-          application/json:
-            schema:
-              $ref: '#components/schemas/Login'
+          description: >-
+            Utilize Esse Token no Botão acima `Authorize 🔓`
 
-              
+            
+            Sera utilizado na rota que cadastra os palestrantes.
+          content:
+            application/json:
+              schema:
+                  $ref: '#components/schemas/Login'   
 
   /api/talker:
     get:
@@ -80,6 +82,11 @@ paths:
         - talker
       summary: Cria um palestrante.
       description: Um array de objetos com dados dos palestrantes
+      # parameters:
+      #   - in: header
+      #     name: Authorization
+      #     type: apiKey
+      #     required: true
       requestBody:
         description: Insira o Palestrante com respectivos dados
         content:
@@ -94,6 +101,9 @@ paths:
             application/json:
               schema:
                   $ref: '#components/schemas/Talker'
+      security:
+        - basicAuth: []
+
 
 components:
   schemas:
@@ -177,10 +187,23 @@ components:
               type: string
               example: 5
 
-requestBodies:
-  TalkerPost:
-    description: Adicionar Palestrante
-    content:
-      application/json:
-        schema:
-          $ref: '#/components/schemas/TalkerPost'
+
+  requestBodies:
+    TalkerPost:
+      description: Adicionar Palestrante
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TalkerPost'
+
+  securitySchemes:
+    basicAuth:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Token para criar usuarios
+
+    # api_key:
+    #   type: apiKey
+    #   name: api_key
+    #   in: header
