@@ -14,6 +14,8 @@ info:
   version: 1.0.0
   contact:
     email: cortaesai@gmail.com
+    name: Andrey
+    url: https://www.linkedin.com/in/andreyrv/
 servers:
   - url: http://localhost:3001/
   - url: https://24-talker-manager-production.up.railway.app/
