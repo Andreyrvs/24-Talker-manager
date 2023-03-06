@@ -1,0 +1,306 @@
+openapi: 3.0.3
+info:
+  title: Cadastro de Palestrantes (C.R.U.D) - OpenAPI 3.0
+  description: >-
+    Este projeto trata-se de uma aplicação de cadastro de talkers (palestrantes) em que será possível cadastrar, visualizar, pesquisar, editar e excluir informações.
+
+
+    Alguns links úteis:
+
+    - [Repositorio Talker Manager](https://github.com/Andreyrvs/24-talker-manager)
+  version: 1.0.0
+  contact:
+    email: cortaesai@gmail.com
+    linkedin: https://www.linkedin.com/in/andreyrv/
+servers:
+  - url: http://localhost:3001/
+  - url: https://24-talker-manager-production.up.railway.app/
+tags:
+  - name: login
+    description: Login da aplicação
+  - name: health
+    description: status da api
+  - name: talker
+    description: Tudo sobre os palestrantes
+paths:
+  /health:
+    get:
+      tags:
+        - health
+      summary: Status da API
+      description: Retorna um objeto com dados de tempo"
+      responses:
+        '200':
+          description: Operação bem sucedida
+          content:
+            application/json:
+              schema:
+                  $ref: '#components/schemas/Health'
+
+
+  /api/login:
+    post:
+      tags:
+        - login
+      summary: Loga o palestrante no sistema.
+      description: ''
+      requestBody:
+        description: Insira o Palestrante com respectivos dados
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/LoginPost'
+        required: true
+      responses:
+        '200':
+          description:
+            $ref: '#/components/examples/Authorize'
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Login'
+              
+
+  /api/talker:
+    get:
+      tags:
+        - talker
+      summary: Retorna todos os palestrantes
+      description: Um array de objetos com dados dos palestrantes
+      responses:
+        '200':
+          description: Operação bem sucedida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Talker'
+
+    post:
+      tags:
+        - talker
+      summary: Cria um palestrante.
+      description: Um array de objetos com dados dos palestrantes
+      requestBody:
+        $ref: '#components/requestBodies/TalkerBodie'
+        required: true
+      security:
+        - basicAuth: []
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                  $ref: '#components/responses/201CreatedTalker'
+        '401':
+          description: 'Token não encontrado'
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/401UnauthorizedTalker'
+    
+  
+  /api/talker/{talkerId}:
+
+    get:
+      tags:
+        - talker
+      summary: Lista o usuário
+      description: 
+      parameters:
+        - name: talkerId
+          in: path
+          description: Busca um usuário 
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Retorna o usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/201CreatedTalker'
+        '404':
+          description: Pessoa palestrante não encontrada
+        '500':
+          $ref: '#components/responses/500InternalServerError'
+
+    put:
+      tags:
+        - talker
+      summary: Atualiza usuário
+      description: É possivel atualizar um ou mais dados
+      parameters:
+        - name: talkerId
+          in: path
+          description: Isso só pode ser feito pelo usuário logado. 
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#components/requestBodies/TalkerId'
+        required: true
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/201CreatedTalker'
+        '500':
+          $ref: '#components/responses/500InternalServerError'
+
+    delete:
+      tags:
+        - talker
+      summary: Lista o usuário
+      description:
+      parameters:
+        - name: talkerId
+          in: path
+          description: ID do palestrante que precisa ser excluído
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'No content'        
+
+components:
+  schemas:
+    Health:
+      type: object
+      properties:
+        uptime:
+          type: integer
+          example: 7.076872259
+        message:
+          type: string
+          example: OK
+        timestamp:
+          type: string
+          example: 2023-03-03T23:31:51.184Z
+        cors:
+          type: string
+          example: This is CORS-enabled for all origins!
+    
+    Login:
+      type: object
+      properties:
+        token:
+          type: string
+          example: ba0f2cac65a4036e
+
+    LoginPost:
+      type: object
+      properties:
+        email:
+          type: string
+          example: seuemail@email.com
+        password:
+          type: string
+          example: umasenhamuitoforte
+
+    Talker:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Henrique Albuquerque
+        age:
+          type: integer
+          example: 87
+        talk:
+          type: object
+          properties:
+            watchedAt:
+              type: string
+              example: 23/10/2020
+            rate:
+              type: string
+              example: 5
+
+
+  examples:
+    Authorize: >-
+      Utilize Esse Token no Botão acima `Authorize 🔓`
+
+
+      Sera utilizado na rota que cadastra os palestrantes.
+    
+    Token: >-
+      É necessário colocar o **Token** no Botão `Authorize 🔓` no início da página.
+
+
+      `Token` é obtido ao realizar login.
+
+
+  responses:
+
+    201CreatedTalker:
+      required:
+        - name
+        - age
+        - talk
+        - watchedAt
+        - rate
+      type: object
+      properties:
+        name:
+          type: string
+          example: Andrey RV
+        age:
+          type: integer
+          example: 25
+        id:
+          type: integer
+          example: 5
+        talk:
+          type: object
+          properties:
+            watchedAt:
+              type: string
+              example: 23/10/2020
+            rate:
+              type: string
+              example: 5
+
+    401UnauthorizedTalker:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Token não encontrado
+    
+    500InternalServerError:
+      description: Internal server error
+
+
+  requestBodies:
+    TalkerBodie:
+      description:
+        $ref: '#/components/examples/Token'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Talker'
+    TalkerId:
+      description: Atualizar dados do paslestrante
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Talker'
+    
+
+
+  securitySchemes:
+    basicAuth:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Token para criar usuarios
