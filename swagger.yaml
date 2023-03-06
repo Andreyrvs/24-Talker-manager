@@ -41,7 +41,24 @@ paths:
     post:
       tags:
         - login
-        
+      summary: Loga o palestrante no sistema.
+      description: ''
+      requestBody:
+        description: Insira o Palestrante com respectivos dados
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/LoginPost'
+        required: true
+      responses:
+        '200':
+        description: Operação bem sucedida
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Login'
+
+              
 
   /api/talker:
     get:
@@ -96,6 +113,23 @@ components:
           type: string
           example: This is CORS-enabled for all origins!
     
+    Login:
+      type: object
+      properties:
+        token:
+          type: string
+          example: ba0f2cac65a4036e
+
+    LoginPost:
+      type: object
+      properties:
+        email:
+          type: string
+          example: seuemail@email.com
+        password:
+          type: string
+          example: umasenhamuitoforte
+
     Talker:
       type: object
       properties:
