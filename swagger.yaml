@@ -55,12 +55,19 @@ paths:
           description: >-
             Utilize Esse Token no Botão acima `Authorize 🔓`
 
-            
+
             Sera utilizado na rota que cadastra os palestrantes.
           content:
             application/json:
               schema:
-                  $ref: '#components/schemas/Login'   
+                $ref: '#components/schemas/Login'
+        '401':
+          description: 'Token não encontrado'
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Reponses'
+              
 
   /api/talker:
     get:
@@ -82,17 +89,12 @@ paths:
         - talker
       summary: Cria um palestrante.
       description: Um array de objetos com dados dos palestrantes
-      # parameters:
-      #   - in: header
-      #     name: Authorization
-      #     type: apiKey
-      #     required: true
       requestBody:
         description: Insira o Palestrante com respectivos dados
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TalkerPost'
+              $ref: '#/components/schemas/Talker'
         required: true
       responses:
         '201':
@@ -100,7 +102,7 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#components/schemas/Talker'
+                  $ref: '#components/responses/TalkerR'
       security:
         - basicAuth: []
 
@@ -149,9 +151,6 @@ components:
         age:
           type: integer
           example: 87
-        id:
-          type: integer
-          example: 2
         talk:
           type: object
           properties:
@@ -162,7 +161,9 @@ components:
               type: string
               example: 5
 
-    TalkerPost:
+
+  responses:
+    TalkerR:
       required:
         - name
         - age
@@ -177,6 +178,9 @@ components:
         age:
           type: integer
           example: 25
+        id:
+          type: integer
+          example: 5
         talk:
           type: object
           properties:
