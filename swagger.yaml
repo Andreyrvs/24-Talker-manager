@@ -37,6 +37,7 @@ paths:
               schema:
                   $ref: '#components/schemas/Health'
 
+
   /api/login:
     post:
       tags:
@@ -52,21 +53,12 @@ paths:
         required: true
       responses:
         '200':
-          description: >-
-            Utilize Esse Token no Botão acima `Authorize 🔓`
-
-
-            Sera utilizado na rota que cadastra os palestrantes.
+          description:
+            $ref: '#/components/examples/Authorize'
           content:
             application/json:
               schema:
                 $ref: '#components/schemas/Login'
-        '401':
-          description: 'Token não encontrado'
-          content:
-            application/json:
-              schema:
-                $ref: '#components/schemas/Reponses'
               
 
   /api/talker:
@@ -84,27 +76,59 @@ paths:
                 type: array
                 items:
                   $ref: '#components/schemas/Talker'
+
     post:
       tags:
         - talker
       summary: Cria um palestrante.
       description: Um array de objetos com dados dos palestrantes
       requestBody:
-        description: Insira o Palestrante com respectivos dados
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Talker'
+        $ref: '#components/requestBodies/TalkerBodie'
         required: true
+      security:
+        - basicAuth: []
       responses:
         '201':
           description: Created
           content:
             application/json:
               schema:
-                  $ref: '#components/responses/TalkerR'
+                  $ref: '#components/responses/201CreatedTalker'
+        '401':
+          description: 'Token não encontrado'
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/401UnauthorizedTalker'
+    
+  
+  /api/talker/{talkerId}:
+    put:
+      tags:
+        - talker
+      summary: Atualiza usuário
+      description: 
+      parameters:
+        - name: talkerId
+          in: path
+          description: Isso só pode ser feito pelo usuário logado. 
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#components/requestBodies/TalkerId'
+        required: true
       security:
         - basicAuth: []
+      responses:
+        '200':
+          description:
+          content:
+            application/json:
+              schema:
+                  $ref: '#components/responses/201CreatedTalker'
+        '500':
+          description: Internal server error
 
 
 components:
@@ -162,8 +186,23 @@ components:
               example: 5
 
 
+  examples:
+    Authorize: >-
+      Utilize Esse Token no Botão acima `Authorize 🔓`
+
+
+      Sera utilizado na rota que cadastra os palestrantes.
+    
+    Token: >-
+      É necessário colocar o **Token** no Botão `Authorize 🔓` no início da página.
+
+
+      `Token` é obtido ao realizar login.
+
+
   responses:
-    TalkerR:
+
+    201CreatedTalker:
       required:
         - name
         - age
@@ -191,14 +230,30 @@ components:
               type: string
               example: 5
 
+    401UnauthorizedTalker:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Token não encontrado
+
 
   requestBodies:
-    TalkerPost:
-      description: Adicionar Palestrante
+    TalkerBodie:
+      description:
+        $ref: '#/components/examples/Token'
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/TalkerPost'
+            $ref: '#/components/schemas/Talker'
+    TalkerId:
+      description: Atualizar dados do paslestrante
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Talker'
+    
+
 
   securitySchemes:
     basicAuth:
@@ -206,8 +261,3 @@ components:
       name: Authorization
       in: header
       description: Token para criar usuarios
-
-    # api_key:
-    #   type: apiKey
-    #   name: api_key
-    #   in: header
