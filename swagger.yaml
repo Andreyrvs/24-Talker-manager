@@ -103,11 +103,36 @@ paths:
     
   
   /api/talker/{talkerId}:
+
+    get:
+      tags:
+        - talker
+      summary: Lista o usuário
+      description: 
+      parameters:
+        - name: talkerId
+          in: path
+          description: Busca um usuário 
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Retorna o usuário
+          content:
+            application/json:
+              schema:
+                $ref: '#components/responses/201CreatedTalker'
+        '404':
+          description: Pessoa palestrante não encontrada
+        '500':
+          $ref: '#components/responses/500InternalServerError'
+
     put:
       tags:
         - talker
       summary: Atualiza usuário
-      description: 
+      description: É possivel atualizar um ou mais dados
       parameters:
         - name: talkerId
           in: path
@@ -126,10 +151,25 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#components/responses/201CreatedTalker'
+                $ref: '#components/responses/201CreatedTalker'
         '500':
-          description: Internal server error
+          $ref: '#components/responses/500InternalServerError'
 
+    delete:
+      tags:
+        - talker
+      summary: Lista o usuário
+      description:
+      parameters:
+        - name: talkerId
+          in: path
+          description: ID do palestrante que precisa ser excluído
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: 'No content'        
 
 components:
   schemas:
@@ -236,6 +276,9 @@ components:
         message:
           type: string
           example: Token não encontrado
+    
+    500InternalServerError:
+      description: Internal server error
 
 
   requestBodies:
